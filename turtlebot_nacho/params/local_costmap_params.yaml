@@ -1,0 +1,16 @@
+local_costmap:
+   global_frame: odom
+
+   rolling_window: true
+   width: 4.0
+   height: 4.0
+
+
+   plugins:
+    - {name: obstacles_laser,           type: "costmap_2d::ObstacleLayer"}
+    - {name: inflation,                 type: "costmap_2d::InflationLayer"}
+  ##  - {name: danger,                    type: "danger_navigation_layers::ProxemicLayer"}
+  ##  - {name: exit,                      type: "exit_navigation_layers::ProxemicLayer"}
+
+    #- {name: simple,                    type: "simple_layer_namespace::SimpleLayer"}
+    #- {name: gryd,                      type: "simple_layer_namespace::GridLayer"}
