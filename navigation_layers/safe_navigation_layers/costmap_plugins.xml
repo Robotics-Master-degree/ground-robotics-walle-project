@@ -1,0 +1,8 @@
+<library path="lib/libsafe_layers">
+  <class type="safe_navigation_layers::ProxemicLayer" base_class_type="costmap_2d::Layer">
+    <description>Uses people information to change the costmap</description>
+  </class>
+  <class type="safe_navigation_layers::PassingLayer" base_class_type="costmap_2d::Layer">
+    <description>Uses people information to change the costmap</description>
+  </class>
+</library>
