@@ -1,0 +1,41 @@
+
+<launch>
+  <!--arg name="world_file"  value="$(optenv TURTLEBOT_GAZEBO_WORLD_FILE /home/julia/RT_ws/src/wall_e/world/willow_garage.world)"/-->
+  <!--include file="$(find eurecat_grobotics_project)/launch/maze1.launch" /-->
+  <!--arg name="world_file" value="$(optenv TURTLEBOT_GAZEBO_WORLD_FILE (find eurecat_grobotics_project)/worlds/maze1.world" /-->
+  <arg name="world_file" default="$(find turtlebot_nacho)/worlds/ground_robotics_final_project_scenario2.world"/>
+
+  <arg name="base"      value="$(optenv TURTLEBOT_BASE kobuki)"/> <!-- create, roomba -->
+  <arg name="battery"   value="$(optenv TURTLEBOT_BATTERY /proc/acpi/battery/BAT0)"/>  <!-- /proc/acpi/battery/BAT0 -->
+  <arg name="gui" default="true"/>
+  <arg name="stacks"    value="$(optenv TURTLEBOT_STACKS hexagons)"/>  <!-- circles, hexagons -->
+  <arg name="3d_sensor" value="$(optenv TURTLEBOT_3D_SENSOR astra)"/>
+  <arg name="lidar" value="$(optenv TURTLEBOT_LIDAR rplidar)"/>  <!-- -->
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_file)"/>
+  </include>
+
+  <include file="$(find turtlebot_walle)/launch/includes/simulated_kobuki_lidar.launch.xml">
+    <arg name="base" value="$(arg base)"/>
+    <arg name="stacks" value="$(arg stacks)"/>
+    <arg name="3d_sensor" value="$(arg 3d_sensor)"/>
+    <arg name="lidar" value="$(arg lidar)"/>
+    <param name="/use_sim_time" value="true"/>
+  </include>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="30.0" />
+  </node>
+
+<node pkg="vision" name="camera_rplidar" type="camera_rplidar.py" output="screen"/>
+<!--node pkg="cluster_detection" name="main" type="main.py" output="screen"/-->
+<!--include file="$(find turtlebot_walle)/launch/wall_e/gmapping.launch"/-->
+<include file="$(find turtlebot_nacho)/launch/includes/gmapping.launch"/>
+<include file="$(find turtlebot_nacho)/launch/includes/move_base.launch"/>
+<include file="$(find my_configure)/launch/explore.launch"/>
+
+<node type="rviz" name="rviz" pkg="rviz" /> <!-- args="-d $(find package_name)/rviz/config_file.rviz" /-->
+
+
+</launch>

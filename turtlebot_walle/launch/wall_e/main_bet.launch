@@ -1,0 +1,29 @@
+
+<launch>
+  <!--arg name="world_file"  value="$(find eurecat_grobotics_project)/launch/maze1.launch)"/-->
+
+  <arg name="base"      value="$(optenv TURTLEBOT_BASE kobuki)"/> <!-- create, roomba -->
+  <arg name="battery"   value="$(optenv TURTLEBOT_BATTERY /proc/acpi/battery/BAT0)"/>  <!-- /proc/acpi/battery/BAT0 -->
+  <arg name="gui" default="true"/>
+  <arg name="stacks"    value="$(optenv TURTLEBOT_STACKS hexagons)"/>  <!-- circles, hexagons -->
+  <arg name="3d_sensor" value="$(optenv TURTLEBOT_3D_SENSOR astra)"/>
+  <arg name="lidar" value="$(optenv TURTLEBOT_LIDAR rplidar)"/>  <!-- -->
+
+  <include file="$(find eurecat_grobotics_project)/launch/maze1.launch"/>
+
+  <include file="$(find turtlebot_walle)/launch/includes/simulated_kobuki_lidar.launch.xml">
+    <arg name="base" value="$(arg base)"/>
+    <arg name="stacks" value="$(arg stacks)"/>
+    <arg name="3d_sensor" value="$(arg 3d_sensor)"/>
+    <arg name="lidar" value="$(arg lidar)"/>
+  </include>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="30.0" />
+  </node>
+
+
+   <include file="$(find turtlebot_walle)/launch/wall_e/gmapping.launch"/>
+  <include file="$(find turtlebot_walle)/launch/wall_e/move_base.launch"/>
+
+</launch>
